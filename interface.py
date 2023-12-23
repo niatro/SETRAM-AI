@@ -298,3 +298,4 @@ async def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
 chat_interface = pn.chat.ChatInterface(callback=callback)
 chat_interface.send("Enviar un mensaje!", user="System", respond=False)
 chat_interface.servable()
+  
