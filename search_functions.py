@@ -1,8 +1,13 @@
 # search_functions.py
+import os
 import requests
 import json
+from dotenv import load_dotenv
 
-def google_search(search_keyword, serper_api_key):    
+load_dotenv()
+serper_api_key = os.getenv("SERP_API_KEY")
+
+def google_search(search_keyword):    
     url = "https://google.serper.dev/search"
     
     payload = json.dumps({

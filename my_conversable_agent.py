@@ -8,6 +8,9 @@ class MyConversableAgent(autogen.ConversableAgent):
         super().__init__(*args, **kwargs)
         self.chat_interface = chat_interface
 
+    def initialize(self, chat_interface):
+        self.chat_interface = chat_interface
+
     async def a_get_human_input(self, prompt: str) -> str:
         global input_future
         print('AGET!!!!!!')  # or however you wish to display the prompt
