@@ -18,58 +18,21 @@ from web_scraping_functions import web_scraping
 from summary_functions import resumen
 from my_conversable_agent import MyConversableAgent
 from chat_functions import delayed_initiate_chat, callback
-
-
-
-load_dotenv()
-brwoserless_api_key = os.getenv("BROWSERLESS_API_KEY")
-serper_api_key = os.getenv("SERP_API_KEY")
-airtable_api_key = os.getenv("AIRTABLE_API_KEY")
-config_list = config_list_from_json("OAI_CONFIG_LIST")
-gpt4_config = {"config_list": config_list, "temperature":0, "seed": 53} # El seed hace deterministica la respuesta
-
-
+from config import brwoserless_api_key, serper_api_key, airtable_api_key, config_list, gpt4_config
+from agent_creation import create_user_proxy, create_researcher, create_research_manager
 
 
 chat_interface = pn.chat.ChatInterface(callback=lambda contents, user, instance: callback(contents, user, instance, user_proxy, manager))
 
-user_proxy = MyConversableAgent(
-    chat_interface=chat_interface,
-    name="Admin",
-    is_termination_msg=lambda x: x.get("content", "").rstrip().endswith("TERMINATE"),
-    system_message="""A human admin. Interact with the planner to discuss the plan. Plan execution needs to be approved by this admin.  
-    """,
-    code_execution_config=False,
-    human_input_mode="ALWAYS",
-)
 
-# Crear agente investigador
-researcher = GPTAssistantAgent(
-    name = "researcher",
-    llm_config = {
-        "config_list": config_list,
-        "assistant_id": "asst_aPJMdifV02oopBypJPxYgAKw"
-    }
-)
-# Crear las funciones que usara el researcher
-researcher.register_function(
-        function_map={
-            "google_search": google_search,
-            "web_scraping": web_scraping
-            
-        }
-    )
+# Crear user_proxy
+user_proxy = create_user_proxy(chat_interface)
 
-# Crear agente administrador de investigación
-research_manager = GPTAssistantAgent(
-    name="research_manager",
-    llm_config = {
-        "config_list": config_list,
-        "assistant_id": "asst_vzMkR7T4kiwwxbJ4wF7cE3XJ"
-    }
-)
+# Crear researcher
+researcher = create_researcher()
 
-
+# Crear research_manager
+research_manager = create_research_manager()
 
 groupchat = autogen.GroupChat(agents=[user_proxy,  researcher, research_manager], messages=[], max_round=20)
 manager = autogen.GroupChatManager(groupchat=groupchat, llm_config=gpt4_config)
