@@ -21,3 +21,4 @@ async def callback(contents: str, user: str, instance: pn.chat.ChatInterface, us
             input_future.set_result(contents)
         else:
             print("Actualmente no hay ninguna respuesta en espera.")
+
