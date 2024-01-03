@@ -9,7 +9,12 @@ serper_api_key = os.getenv("SERP_API_KEY")
 airtable_api_key = os.getenv("AIRTABLE_API_KEY")
 
 # Cargar lista de configuración
-config_list = config_list_from_json("OAI_CONFIG_LIST")
+config_list = config_list_from_json(
+    env_or_file="OAI_CONFIG_LIST",
+    filter_dict={
+        "model": ["gpt4-1106-preview"]
+                 }
+)
 
 # Configuración de gpt4
 gpt4_config = {"config_list": config_list, "temperature":0, "seed": 53} # El seed hace deterministica la respuesta
