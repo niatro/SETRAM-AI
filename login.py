@@ -2,7 +2,7 @@ from flask import Flask, request, session, redirect, url_for
 
 app = Flask(__name__)
 app.secret_key = 'mabel10'
-
+#Ignacio trabajara un poquito aqui
 # This would be replaced with a real database
 users = {'user1': '1234'}
 
