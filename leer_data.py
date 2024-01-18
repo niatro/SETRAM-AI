@@ -35,7 +35,7 @@ output_file_path = './data/manual_vial.py'
 chunk_size = 1000
 
 # Solapamiento entre segmentos consecutivos (por ejemplo, 100 caracteres)
-overlap = 100
+overlap = 200
 
 # Leer el archivo original y convertirlo en una lista con solapamiento
 data = read_file_and_convert_to_list_with_overlap(input_file_path, chunk_size, overlap)

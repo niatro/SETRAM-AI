@@ -13,10 +13,10 @@ from txtai.pipeline import LLM
 embeddings = Embeddings(path="sentence-transformers/nli-mpnet-base-v2")
 embeddings.index(data)
 
-# print("Busqueda semantica:")
-# for query in ["Que factores se ven impactados en una red vial deteriorada "]:
-#     uid = embeddings.search(query, 1)[0][0]
-#     print(f"Pregunta: {query}, Resultado: {data[uid]}")
+print("Busqueda semantica:")
+for query in ["Que factores se ven impactados en una red vial deteriorada ", "Rodados en la via, ¿Cual es el peligro?"]:
+    uid = embeddings.search(query, 1)[0][0]
+    print(f"Pregunta: {query}, Resultado: {data[uid]}")
 
 
 ## 4. Keyword Search and Dense Vector index ##
@@ -43,12 +43,12 @@ embeddings.index(data)
 #   print(embeddings.search(query, limit=1, index="dense"))
 
 ## 5. Hybrid Search (Sparse + Dense) ##
-print("\nHybrid Search Results:")
-hybrid_embeddings = Embeddings(hybrid=True, path="sentence-transformers/nli-mpnet-base-v2")
-hybrid_embeddings.index(data)
-for query in ["Cacofonia"]:
-    uid = hybrid_embeddings.search(query, 1)[0][0]
-    print(f"Query: {query}, Result: {data[uid]}")
+# print("\nHybrid Search Results:")
+# hybrid_embeddings = Embeddings(hybrid=True, path="sentence-transformers/nli-mpnet-base-v2")
+# hybrid_embeddings.index(data)
+# for query in ["Cacofonia"]:
+#     uid = hybrid_embeddings.search(query, 1)[0][0]
+#     print(f"Query: {query}, Result: {data[uid]}")
 
 ## 6. Content Storage for large amount of data ##
 
@@ -67,14 +67,14 @@ for query in ["Cacofonia"]:
 # print("Query: ", query, result)
 
 ## 9. RAG (Retrieval-Augmented Generation) ##
-from txtai.pipeline import Extractor
+# from txtai.pipeline import Extractor
 
-llm_embeddings = Embeddings(path="sentence-transformers/nli-mpnet-base-v2", content=True, autoid="uuid5")
-llm_embeddings.index(data)
+# llm_embeddings = Embeddings(path="sentence-transformers/nli-mpnet-base-v2", content=True, autoid="uuid5")
+# llm_embeddings.index(data)
 
-extractor = Extractor(llm_embeddings, "google/flan-t5-large")
+# extractor = Extractor(llm_embeddings, "google/flan-t5-large")
 
-llm_query = "Que factores se ven impactados en una red vial deteriorada?"
-context = lambda question: [{"query": question, "question": f"Answer the following question using the context below.\nQuestion: {question}\nContext:"}]
-print("RAG Result:")
-print(extractor(context(llm_query))[0])
+# llm_query = "Que factores se ven impactados en una red vial deteriorada?"
+# context = lambda question: [{"query": question, "question": f"Answer the following question using the context below.\nQuestion: {question}\nContext:"}]
+# print("RAG Result:")
+# print(extractor(context(llm_query))[0])
